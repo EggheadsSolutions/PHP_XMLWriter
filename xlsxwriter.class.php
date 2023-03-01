@@ -241,12 +241,11 @@ class XLSXWriter
             if (!empty($col_options)) {
                 $ht = isset($col_options['height']) ? floatval($col_options['height']) : 12.1;
                 $customHt = isset($col_options['height']) ? 'true' : 'false';
-                $sheet->file_writer->write('<row collapsed="false" customFormat="false" customHeight="'.($customHt).'" hidden="'.false.'" ht="'.($ht).'" outlineLevel="0" r="' . (1) . '">');
+                $sheet->file_writer->write('<row collapsed="false" customFormat="false" customHeight="'.($customHt).'" hidden="false" ht="'.($ht).'" outlineLevel="0" r="' . (1) . '">');
             } else {
                 $sheet->file_writer->write('<row collapsed="false" customFormat="false" customHeight="false" hidden="false" ht="12.1" outlineLevel="0" r="' . (1) . '">');
             }
 
-			$sheet->file_writer->write('<row collapsed="false" customFormat="false" customHeight="false" hidden="false" ht="12.1" outlineLevel="0" r="' . (1) . '">');
 			foreach ($header_row as $c => $v) {
 				$cell_style_idx = empty($style) ? $sheet->columns[$c]['default_cell_style'] : $this->addCellStyle( 'GENERAL', json_encode(isset($style[0]) ? $style[$c] : $style) );
 				$this->writeCell($sheet->file_writer, 0, $c, $v, $number_format_type='n_string', $cell_style_idx);
@@ -377,7 +376,7 @@ class XLSXWriter
 		if (!is_scalar($value) || $value==='') { //objects, array, empty
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'"/>');
 		} elseif (is_string($value) && $value[0]=='='){
-			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="s"><f>'.substr(self::xmlspecialchars($value), 1).'</f></c>');
+            $file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="s"><f>'.substr(self::xmlspecialchars($value), 1).'</f></c>');
 		} elseif ($num_format_type=='n_date') {
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
 		} elseif ($num_format_type=='n_datetime') {
